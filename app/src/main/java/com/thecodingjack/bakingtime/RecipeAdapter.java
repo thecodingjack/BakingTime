@@ -1,7 +1,7 @@
 package com.thecodingjack.bakingtime;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,43 +15,53 @@ import java.util.ArrayList;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private ArrayList<Recipe> recipeList;
+    private RecipeClickListener listener;
 
     public RecipeAdapter(ArrayList<Recipe> recipes) {
-    }
-
-    public void setRecipeList(ArrayList<Recipe> recipes){
         recipeList = recipes;
     }
 
-    class RecipeViewHolder extends RecyclerView.ViewHolder {
-    TextView recipeNameTextView;
+    public interface RecipeClickListener {
+        void onListItemClick(Recipe selectedRecipe);
+    }
+
+    class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView recipeNameTextView;
+
+        @Override
+        public void onClick(View v) {
+            listener.onListItemClick(recipeList.get(getAdapterPosition()));
+        }
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
-            recipeNameTextView = (TextView)itemView.findViewById(R.id.card_recipe_name);
+            recipeNameTextView = (TextView) itemView.findViewById(R.id.card_recipe_name);
         }
 
-        public void bind(int position){
-            recipeNameTextView.setText(recipeList.get(position).getName());
-            Log.v("TEST",recipeList.get(position).getName());
+        public void bind(Context context, int position) {
+            Recipe currentRecipe = recipeList.get(position);
+            recipeNameTextView.setText(currentRecipe.getName());
+
+
         }
     }
 
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item, parent, false);
         return new RecipeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
-        holder.bind(position);
+        Context context = holder.itemView.getContext();
+        holder.bind(context, position);
 
     }
 
     @Override
     public int getItemCount() {
-        if(recipeList == null)return 0;
+        if (recipeList == null) return 0;
         return recipeList.size();
     }
 }

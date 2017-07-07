@@ -3,7 +3,6 @@ package com.thecodingjack.bakingtime;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.thecodingjack.bakingtime.databinding.ActivityMainBinding;
 import com.thecodingjack.bakingtime.util.NetworkUtil;
@@ -18,13 +17,11 @@ import java.util.ArrayList;
 public class FetchRecipesTask extends AsyncTask<Void,Void,ArrayList<Recipe>> {
     private ActivityMainBinding mbinding;
     private RecipeAdapter mAdapter;
-    private RecyclerView mRecyclerView;
     private Context context;
 
 
     public FetchRecipesTask(Context ctx, ActivityMainBinding binding) {
         context=ctx;
-//        mRecyclerView = recyclerView;
         mbinding = binding;
     }
 
@@ -48,7 +45,5 @@ public class FetchRecipesTask extends AsyncTask<Void,Void,ArrayList<Recipe>> {
         mAdapter = new RecipeAdapter(recipes);
         mbinding.recyclerview.setLayoutManager(layoutManager);
         mbinding.recyclerview.setAdapter(mAdapter);
-        mAdapter.setRecipeList(recipes);
-
     }
 }
