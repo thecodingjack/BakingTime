@@ -18,11 +18,13 @@ public class FetchRecipesTask extends AsyncTask<Void,Void,ArrayList<Recipe>> {
     private ActivityMainBinding mbinding;
     private RecipeAdapter mAdapter;
     private Context context;
+    private RecipeAdapter.RecipeClickListener listener;
 
 
-    public FetchRecipesTask(Context ctx, ActivityMainBinding binding) {
+    public FetchRecipesTask(Context ctx, ActivityMainBinding binding, RecipeAdapter.RecipeClickListener listener) {
         context=ctx;
         mbinding = binding;
+        this.listener = listener;
     }
 
     @Override
@@ -42,8 +44,9 @@ public class FetchRecipesTask extends AsyncTask<Void,Void,ArrayList<Recipe>> {
     @Override
     protected void onPostExecute(ArrayList<Recipe> recipes) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
-        mAdapter = new RecipeAdapter(recipes);
+        mAdapter = new RecipeAdapter(recipes,listener);
         mbinding.recyclerview.setLayoutManager(layoutManager);
         mbinding.recyclerview.setAdapter(mAdapter);
+
     }
 }

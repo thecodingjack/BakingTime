@@ -2,6 +2,7 @@ package com.thecodingjack.bakingtime;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private ArrayList<Recipe> recipeList;
     private RecipeClickListener listener;
 
-    public RecipeAdapter(ArrayList<Recipe> recipes) {
+//    public void setRecipeList(ArrayList<Recipe> recipeList) {
+//        this.recipeList = recipeList;
+//    }
+
+    public RecipeAdapter(ArrayList<Recipe> recipes, RecipeClickListener listener) {
         recipeList = recipes;
+        this.listener = listener;
+
     }
 
     public interface RecipeClickListener {
@@ -30,12 +37,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         @Override
         public void onClick(View v) {
-            listener.onListItemClick(recipeList.get(getAdapterPosition()));
+            Recipe selectedRecipe = recipeList.get(getAdapterPosition());
+            Log.v("TEST",selectedRecipe.getName());
+            listener.onListItemClick(selectedRecipe);
         }
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
             recipeNameTextView = (TextView) itemView.findViewById(R.id.card_recipe_name);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Context context, int position) {

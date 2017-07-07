@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview);
 
 
-        new FetchRecipesTask(this,mbinding).execute();
+        new FetchRecipesTask(this,mbinding,this).execute();
     }
 
     @Override

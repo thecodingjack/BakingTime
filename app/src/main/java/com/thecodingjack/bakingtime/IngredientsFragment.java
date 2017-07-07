@@ -16,9 +16,7 @@ import java.util.ArrayList;
 
 public class IngredientsFragment extends Fragment {
     public static final String RECIPE_LIST = "recipe_list";
-    public static final String LIST_INDEX = "list_index";
-    private ArrayList<Recipe> recipesList;
-    private int listIndex;
+    private ArrayList<RecipeIngredient> ingredientList;
 
     public IngredientsFragment() {
     }
@@ -27,18 +25,17 @@ public class IngredientsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(savedInstanceState!= null){
-            recipesList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
-            listIndex = savedInstanceState.getInt(LIST_INDEX);
+            ingredientList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
         }
 
         View view = inflater.inflate(R.layout.fragment_ingredients,container,false);
         final TextView mtextView = (TextView) view.findViewById(R.id.ingredients_frag_TV);
 
-        if(recipesList !=null){
-            ArrayList<RecipeIngredient> ingredientArrayList = recipesList.get(listIndex).getIngredients();
+        if(ingredientList !=null){
+
             StringBuilder sb = new StringBuilder();
-            for(int i =0 ; i<ingredientArrayList.size();i++){
-                RecipeIngredient currentItem = ingredientArrayList.get(i);
+            for(int i =0 ; i<ingredientList.size();i++){
+                RecipeIngredient currentItem = ingredientList.get(i);
                 double quantity = currentItem.getQuantity();
                 String measure = currentItem.getMeasure();
                 String name = currentItem.getIngredientName();
@@ -51,17 +48,12 @@ public class IngredientsFragment extends Fragment {
         return view;
     }
 
-    public void setRecipesList(ArrayList<Recipe> recipesList) {
-        this.recipesList = recipesList;
-    }
-
-    public void setListIndex(int listIndex) {
-        this.listIndex = listIndex;
+    public void setIngredientList(ArrayList<RecipeIngredient> ingredientList) {
+        this.ingredientList = ingredientList;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(RECIPE_LIST, recipesList);
-        outState.putInt(LIST_INDEX,listIndex);
+        outState.putParcelableArrayList(RECIPE_LIST, ingredientList);
     }
 }
