@@ -13,13 +13,11 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
     ActivityMainBinding mbinding;
     public static final String SELECTED_RECIPE = "recipe";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mbinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview);
-
 
         new FetchRecipesTask(this,mbinding,this).execute();
     }

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class StepsFragment extends Fragment {
     public static final String STEPS_LIST = "steps";
     public static final String STEPS_INDEX = "stepsID";
-    public static final String STEP_KEY = "step_key";
     private ArrayList<RecipeStep> recipeStepArrayList;
     private LinearLayout linearLayout;
 
@@ -40,37 +39,30 @@ public class StepsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
         linearLayout = (LinearLayout)rootView.findViewById(R.id.steps_linear_layout);
         for (int i = 0; i < recipeStepArrayList.size(); i++) {
-
             View newView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_steps,linearLayout,false);
             TextView textView = (TextView) newView.findViewById(R.id.steps_shortDescription);
             linearLayout.addView(newView);
 
             final String shortDescription = recipeStepArrayList.get(i).getShortDescription();
-            final RecipeStep recipeStep = recipeStepArrayList.get(i);
             final int stepIndex = i;
 
-            textView.setText(shortDescription);
+            textView.setText("Step " +i+ ": " + shortDescription);
 
             newView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent stepsIntent = new Intent(getContext(),InstructionActivity.class);
-                    stepsIntent.putExtra(STEP_KEY, recipeStep);
                     stepsIntent.putParcelableArrayListExtra(STEPS_LIST,recipeStepArrayList);
                     stepsIntent.putExtra(STEPS_INDEX,stepIndex);
                     startActivity(stepsIntent);
-
                 }
             });
         }
-
         return rootView;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(STEPS_LIST, recipeStepArrayList);
-
     }
 }

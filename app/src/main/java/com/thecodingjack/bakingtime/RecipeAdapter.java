@@ -18,14 +18,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private ArrayList<Recipe> recipeList;
     private RecipeClickListener listener;
 
-//    public void setRecipeList(ArrayList<Recipe> recipeList) {
-//        this.recipeList = recipeList;
-//    }
-
     public RecipeAdapter(ArrayList<Recipe> recipes, RecipeClickListener listener) {
         recipeList = recipes;
         this.listener = listener;
-
     }
 
     public interface RecipeClickListener {
@@ -38,7 +33,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         @Override
         public void onClick(View v) {
             Recipe selectedRecipe = recipeList.get(getAdapterPosition());
-            Log.v("TEST",selectedRecipe.getName());
             listener.onListItemClick(selectedRecipe);
         }
 
@@ -51,8 +45,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         public void bind(Context context, int position) {
             Recipe currentRecipe = recipeList.get(position);
             recipeNameTextView.setText(currentRecipe.getName());
-
-
         }
     }
 
@@ -66,7 +58,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
         holder.bind(context, position);
-
     }
 
     @Override

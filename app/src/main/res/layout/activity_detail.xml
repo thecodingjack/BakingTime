@@ -8,7 +8,7 @@
     tools:context=".DetailsActivity">
     <LinearLayout
         android:orientation="vertical"
-        android:background="#fefbd8"
+        android:background="@color/colorYellowBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <FrameLayout

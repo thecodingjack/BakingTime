@@ -33,6 +33,9 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 
+import static com.thecodingjack.bakingtime.StepsFragment.STEPS_INDEX;
+import static com.thecodingjack.bakingtime.StepsFragment.STEPS_LIST;
+
 /**
  * Created by lamkeong on 7/7/2017.
  */
@@ -47,28 +50,60 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     private ArrayList<RecipeStep> recipeStepArrayList;
     private int stepIndex;
     private Toast mToast;
+    private Boolean isLand;
 
     public InstructionFragment() {
+    }
+
+    public void setRecipeStepArrayList(ArrayList<RecipeStep> recipeStepArrayList) {
+        this.recipeStepArrayList = recipeStepArrayList;
+    }
+
+    public void setStepIndex(int stepIndex) {
+        this.stepIndex = stepIndex;
+    }
+
+    public void setRecipeStep(RecipeStep recipeStep) {
+        this.recipeStep = recipeStep;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
+        if (rootView.findViewById(R.id.instruction_view) != null) {
+            isLand = true;
+        } else {
+            isLand = false;
+        }
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
         mInstructionView = (TextView) rootView.findViewById(R.id.instruction_view);
         nextButton = (Button) rootView.findViewById(R.id.nextButton);
         previousButton = (Button) rootView.findViewById(R.id.previousButton);
-
         Intent intent = getActivity().getIntent();
-        recipeStep = intent.getParcelableExtra(StepsFragment.STEP_KEY);
-        recipeStepArrayList = intent.getParcelableArrayListExtra(StepsFragment.STEPS_LIST);
-        stepIndex = intent.getIntExtra(StepsFragment.STEPS_INDEX, 0);
+
+        if(intent != null && intent.hasExtra(STEPS_LIST)&& intent.hasExtra(STEPS_INDEX)) {
+            recipeStepArrayList = intent.getParcelableArrayListExtra(STEPS_LIST);
+            stepIndex = intent.getIntExtra(STEPS_INDEX, 0);
+            recipeStep = recipeStepArrayList.get(stepIndex);
+        }
+
+        if(savedInstanceState!=null){
+            stepIndex = savedInstanceState.getInt(STEPS_INDEX,0);
+            recipeStep = recipeStepArrayList.get(stepIndex);
+            Log.v("TEST","Saved step: " + stepIndex);
+        }else{
+            Log.v("TEST","savedInstance is empty");
+        }
+
         recipeUri = Uri.parse(recipeStep.getVideoURL());
+
         if (recipeUri != null) {
             initializePlayer(recipeUri);
         }
-        mInstructionView.setText(recipeStep.getFullDescription());
+        if (isLand) {
+            mInstructionView.setText(recipeStep.getFullDescription());
+        }
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +116,9 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
                         releasePlayer();
                         initializePlayer(recipeUri);
                     }
-                    mInstructionView.setText(recipeStep.getFullDescription());
+                    if (isLand) {
+                        mInstructionView.setText(recipeStep.getFullDescription());
+                    }
                 } else {
                     if (mToast != null) {
                         mToast.cancel();
@@ -103,7 +140,9 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
                         releasePlayer();
                         initializePlayer(recipeUri);
                     }
-                    mInstructionView.setText(recipeStep.getFullDescription());
+                    if (isLand) {
+                        mInstructionView.setText(recipeStep.getFullDescription());
+                    }
                 } else {
                     if (mToast != null) {
                         mToast.cancel();
@@ -166,9 +205,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == ExoPlayer.STATE_READY && playWhenReady) {
-            Log.v("TEST", "Playing");
         } else if (playbackState == ExoPlayer.STATE_READY) {
-            Log.v("TEST", "Paused");
         }
     }
 
@@ -180,6 +217,11 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onPositionDiscontinuity() {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(STEPS_INDEX,stepIndex);
     }
 }
 

@@ -19,6 +19,7 @@ public class DetailsActivity extends AppCompatActivity {
     private Recipe recipe;
     private ScrollView mScrollView;
     private int scrollY;
+    private boolean isTwoPane;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +56,22 @@ public class DetailsActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .add(R.id.steps_container, stepsFragment)
                     .commit();
+
+            if(findViewById(R.id.instruction_container)!=null){
+                isTwoPane = true;
+
+                InstructionFragment instructionFragment = new InstructionFragment();
+                instructionFragment.setRecipeStepArrayList(recipe.getSteps());
+                instructionFragment.setStepIndex(0);
+                instructionFragment.setRecipeStep(recipe.getSteps().get(0));
+                fragmentManager.beginTransaction()
+                        .add(R.id.instruction_container,instructionFragment)
+                        .commit();
+
+            }
         }
+
+
 
         mScrollView.post(new Runnable() {
             @Override
