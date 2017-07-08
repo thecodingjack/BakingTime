@@ -1,6 +1,6 @@
 package com.thecodingjack.bakingtime;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 public class StepsFragment extends Fragment {
     public static final String STEPS_LIST = "steps";
+    public static final String STEP_KEY = "step_key";
     private ArrayList<RecipeStep> recipeStepArrayList;
     private LinearLayout linearLayout;
-    private Context mContext;
 
 
     public StepsFragment() {
@@ -28,10 +28,6 @@ public class StepsFragment extends Fragment {
 
     public void setRecipeStepArrayList(ArrayList<RecipeStep> recipeStepArrayList) {
         this.recipeStepArrayList = recipeStepArrayList;
-    }
-
-    public void setContext(Context mContext) {
-        this.mContext = mContext;
     }
 
     @Nullable
@@ -44,18 +40,21 @@ public class StepsFragment extends Fragment {
         linearLayout = (LinearLayout)rootView.findViewById(R.id.steps_linear_layout);
         for (int i = 0; i < recipeStepArrayList.size(); i++) {
 
-            View newView = LayoutInflater.from(mContext).inflate(R.layout.fragment_steps,linearLayout,false);
+            View newView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_steps,linearLayout,false);
             TextView textView = (TextView) newView.findViewById(R.id.steps_shortDescription);
             linearLayout.addView(newView);
 
             final String shortDescription = recipeStepArrayList.get(i).getShortDescription();
+            final RecipeStep recipeStep = recipeStepArrayList.get(i);
 
             textView.setText(shortDescription);
 
             newView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent stepsIntent = new Intent(getContext(),StepsActivity.class);
+                    stepsIntent.putExtra(STEP_KEY, recipeStep);
+                    startActivity(stepsIntent);
 
                 }
             });
@@ -67,5 +66,6 @@ public class StepsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(STEPS_LIST, recipeStepArrayList);
+
     }
 }
