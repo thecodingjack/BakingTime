@@ -52,7 +52,7 @@ public class StepsFragment extends Fragment {
             newView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent stepsIntent = new Intent(getContext(),StepsActivity.class);
+                    Intent stepsIntent = new Intent(getContext(),InstructionActivity.class);
                     stepsIntent.putExtra(STEP_KEY, recipeStep);
                     startActivity(stepsIntent);
 

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 
 public class IngredientsFragment extends Fragment {
-    public static final String INGREDIENT_LIST = "recipe_list";
+    public static final String RECIPE_LIST = "recipe_list";
     private ArrayList<RecipeIngredient> ingredientList;
 
     public IngredientsFragment() {
@@ -25,7 +25,7 @@ public class IngredientsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(savedInstanceState!= null){
-            ingredientList = savedInstanceState.getParcelableArrayList(INGREDIENT_LIST);
+            ingredientList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
         }
 
         View view = inflater.inflate(R.layout.fragment_ingredients,container,false);
@@ -54,6 +54,6 @@ public class IngredientsFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(INGREDIENT_LIST, ingredientList);
+        outState.putParcelableArrayList(RECIPE_LIST, ingredientList);
     }
 }

@@ -6,7 +6,10 @@
     android:layout_margin="8dp">
     <TextView
         android:text="Ingredients: "
+        android:textColor="@color/DarkBluishGreenText"
+        android:textStyle="bold"
         android:textSize="24sp"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"

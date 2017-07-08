@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
@@ -15,18 +15,26 @@ import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
     public static final String RECIPE_KEY = "recipe_key";
+    public static final String SCROLL_POSITION = "scroll_key";
     private Recipe recipe;
+    private ScrollView mScrollView;
+    private int scrollY;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        mScrollView = (ScrollView) findViewById(R.id.detailScrollView);
+
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra(MainActivity.SELECTED_RECIPE);
-
+        scrollY = 0;
         if (savedInstanceState != null && savedInstanceState.containsKey(RECIPE_KEY)) {
             recipe = savedInstanceState.getParcelable(RECIPE_KEY);
+            if (savedInstanceState.containsKey(SCROLL_POSITION)) {
+                scrollY = savedInstanceState.getInt(SCROLL_POSITION);
+            }
         }
 
         if (recipe != null) {
@@ -49,11 +57,18 @@ public class DetailsActivity extends AppCompatActivity {
                     .commit();
         }
 
+        mScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                mScrollView.smoothScrollTo(0, scrollY);
+            }
+        });
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(RECIPE_KEY, recipe);
-        Log.v("TEST", recipe.getName());
+        outState.putInt(SCROLL_POSITION, mScrollView.getScrollY());
     }
 }
