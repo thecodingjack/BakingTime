@@ -21,6 +21,7 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Recipe recipe = intent.getParcelableExtra(MainActivity.SELECTED_RECIPE);
         ArrayList<RecipeIngredient> ingredientList = recipe.getIngredients();
+        ArrayList<RecipeStep> stepList = recipe.getSteps();
 
 
         if(savedInstanceState == null){
@@ -32,6 +33,12 @@ public class DetailsActivity extends AppCompatActivity {
                     .add(R.id.ingredient_container,ingredientsFragment)
                     .commit();
 
+            StepsFragment stepsFragment = new StepsFragment();
+            stepsFragment.setRecipeStepArrayList(stepList);
+            stepsFragment.setContext(this);
+            fragmentManager.beginTransaction()
+                    .add(R.id.steps_container,stepsFragment)
+                    .commit();
         }
     }
 }
