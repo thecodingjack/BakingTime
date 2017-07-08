@@ -3,19 +3,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="@dimen/mediumPadding">
     <TextView
         android:text="Ingredients: "
         android:textColor="@color/DarkBluishGreenText"
         android:textStyle="bold"
-        android:textSize="24sp"
-        android:layout_marginBottom="8dp"
+        android:textSize="@dimen/largePadding"
+        android:layout_marginBottom="@dimen/mediumPadding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-
         android:id="@+id/ingredients_frag_TV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
 </LinearLayout>

@@ -50,7 +50,6 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     private ArrayList<RecipeStep> recipeStepArrayList;
     private int stepIndex;
     private Toast mToast;
-    private Boolean isLand;
 
     public InstructionFragment() {
     }
@@ -71,11 +70,6 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
-        if (rootView.findViewById(R.id.instruction_view) != null) {
-            isLand = true;
-        } else {
-            isLand = false;
-        }
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
         mInstructionView = (TextView) rootView.findViewById(R.id.instruction_view);
         nextButton = (Button) rootView.findViewById(R.id.nextButton);
@@ -101,9 +95,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         if (recipeUri != null) {
             initializePlayer(recipeUri);
         }
-        if (isLand) {
             mInstructionView.setText(recipeStep.getFullDescription());
-        }
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,9 +108,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
                         releasePlayer();
                         initializePlayer(recipeUri);
                     }
-                    if (isLand) {
-                        mInstructionView.setText(recipeStep.getFullDescription());
-                    }
+                    mInstructionView.setText(recipeStep.getFullDescription());
                 } else {
                     if (mToast != null) {
                         mToast.cancel();
@@ -140,9 +130,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
                         releasePlayer();
                         initializePlayer(recipeUri);
                     }
-                    if (isLand) {
                         mInstructionView.setText(recipeStep.getFullDescription());
-                    }
                 } else {
                     if (mToast != null) {
                         mToast.cancel();
@@ -168,7 +156,6 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
-
 
             mExoPlayer.addListener(this);
 

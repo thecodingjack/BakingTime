@@ -11,15 +11,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:textSize="24sp"
-                android:padding="4dp"
+                android:textSize="@dimen/largeText"
+                android:padding="@dimen/smallPadding"
                 android:textColor="@color/DarkBluishGreenText"
                 android:id="@+id/card_recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Recipe Name"/>
-
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
 

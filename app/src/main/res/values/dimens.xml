@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="largePadding">16dp</dimen>
+    <dimen name="mediumPadding">8dp</dimen>
+    <dimen name="smallPadding">4dp</dimen>
+    <dimen name="largeText">24sp</dimen>
+    <dimen name="mediumText">16sp</dimen>
+    <dimen name="normalMediaPlayerSize">300dp</dimen>
+
+</resources>

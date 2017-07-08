@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorYellowBackground"
+        android:background="@color/colorBlueBackground"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_weight="9"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:padding="@dimen/largePadding"
             android:orientation="vertical">
 
             <FrameLayout
