@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class StepsFragment extends Fragment {
     public static final String STEPS_LIST = "steps";
+    public static final String STEPS_INDEX = "stepsID";
     public static final String STEP_KEY = "step_key";
     private ArrayList<RecipeStep> recipeStepArrayList;
     private LinearLayout linearLayout;
@@ -46,14 +47,18 @@ public class StepsFragment extends Fragment {
 
             final String shortDescription = recipeStepArrayList.get(i).getShortDescription();
             final RecipeStep recipeStep = recipeStepArrayList.get(i);
+            final int stepIndex = i;
 
             textView.setText(shortDescription);
 
             newView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Intent stepsIntent = new Intent(getContext(),InstructionActivity.class);
                     stepsIntent.putExtra(STEP_KEY, recipeStep);
+                    stepsIntent.putParcelableArrayListExtra(STEPS_LIST,recipeStepArrayList);
+                    stepsIntent.putExtra(STEPS_INDEX,stepIndex);
                     startActivity(stepsIntent);
 
                 }

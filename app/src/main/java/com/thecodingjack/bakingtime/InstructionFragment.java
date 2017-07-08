@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -29,6 +31,8 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+
 /**
  * Created by lamkeong on 7/7/2017.
  */
@@ -39,6 +43,10 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     private SimpleExoPlayer mExoPlayer;
     private RecipeStep recipeStep;
     private Uri recipeUri;
+    private Button nextButton, previousButton;
+    private ArrayList<RecipeStep> recipeStepArrayList;
+    private int stepIndex;
+    private Toast mToast;
 
     public InstructionFragment() {
     }
@@ -48,15 +56,63 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
-        mInstructionView = (TextView)rootView.findViewById(R.id.instruction_view);
+        mInstructionView = (TextView) rootView.findViewById(R.id.instruction_view);
+        nextButton = (Button) rootView.findViewById(R.id.nextButton);
+        previousButton = (Button) rootView.findViewById(R.id.previousButton);
 
         Intent intent = getActivity().getIntent();
         recipeStep = intent.getParcelableExtra(StepsFragment.STEP_KEY);
+        recipeStepArrayList = intent.getParcelableArrayListExtra(StepsFragment.STEPS_LIST);
+        stepIndex = intent.getIntExtra(StepsFragment.STEPS_INDEX, 0);
         recipeUri = Uri.parse(recipeStep.getVideoURL());
         if (recipeUri != null) {
             initializePlayer(recipeUri);
         }
         mInstructionView.setText(recipeStep.getFullDescription());
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (stepIndex < recipeStepArrayList.size() - 1) {
+                    stepIndex++;
+                    recipeStep = recipeStepArrayList.get(stepIndex);
+                    recipeUri = Uri.parse(recipeStep.getVideoURL());
+                    if (recipeUri != null) {
+                        releasePlayer();
+                        initializePlayer(recipeUri);
+                    }
+                    mInstructionView.setText(recipeStep.getFullDescription());
+                } else {
+                    if (mToast != null) {
+                        mToast.cancel();
+                    }
+                    mToast = Toast.makeText(getActivity(), "Reached end of instruction", Toast.LENGTH_SHORT);
+                    mToast.show();
+                }
+            }
+        });
+
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (stepIndex > 0) {
+                    stepIndex--;
+                    recipeStep = recipeStepArrayList.get(stepIndex);
+                    recipeUri = Uri.parse(recipeStep.getVideoURL());
+                    if (recipeUri != null) {
+                        releasePlayer();
+                        initializePlayer(recipeUri);
+                    }
+                    mInstructionView.setText(recipeStep.getFullDescription());
+                } else {
+                    if (mToast != null) {
+                        mToast.cancel();
+                    }
+                    mToast = Toast.makeText(getActivity(), "This is the first step", Toast.LENGTH_SHORT);
+                    mToast.show();
+                }
+            }
+        });
         return rootView;
     }
 
