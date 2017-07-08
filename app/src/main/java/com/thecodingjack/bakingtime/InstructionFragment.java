@@ -50,7 +50,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     private ArrayList<RecipeStep> recipeStepArrayList;
     private int stepIndex;
     private Toast mToast;
-
+    private boolean isTwoPane;
     public InstructionFragment() {
     }
 
@@ -60,6 +60,10 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
 
     public void setStepIndex(int stepIndex) {
         this.stepIndex = stepIndex;
+    }
+
+    public void setTwoPane(boolean isTwoPane) {
+        this.isTwoPane = isTwoPane;
     }
 
     public void setRecipeStep(RecipeStep recipeStep) {

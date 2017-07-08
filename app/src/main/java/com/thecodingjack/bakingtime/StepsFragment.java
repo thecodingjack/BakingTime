@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,13 +22,19 @@ public class StepsFragment extends Fragment {
     public static final String STEPS_INDEX = "stepsID";
     private ArrayList<RecipeStep> recipeStepArrayList;
     private LinearLayout linearLayout;
+    private boolean isTwoPane;
 
 
     public StepsFragment() {
     }
 
+    public void setTwoPane(boolean isTwoPane) {
+        this.isTwoPane = isTwoPane;
+    }
+
     public void setRecipeStepArrayList(ArrayList<RecipeStep> recipeStepArrayList) {
         this.recipeStepArrayList = recipeStepArrayList;
+
     }
 
     @Nullable
@@ -51,10 +58,14 @@ public class StepsFragment extends Fragment {
             newView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent stepsIntent = new Intent(getContext(),InstructionActivity.class);
-                    stepsIntent.putParcelableArrayListExtra(STEPS_LIST,recipeStepArrayList);
-                    stepsIntent.putExtra(STEPS_INDEX,stepIndex);
-                    startActivity(stepsIntent);
+                    if(isTwoPane){
+                        Toast.makeText(getActivity(),shortDescription,Toast.LENGTH_SHORT).show();
+                    }else {
+                        Intent stepsIntent = new Intent(getContext(), InstructionActivity.class);
+                        stepsIntent.putParcelableArrayListExtra(STEPS_LIST, recipeStepArrayList);
+                        stepsIntent.putExtra(STEPS_INDEX, stepIndex);
+                        startActivity(stepsIntent);
+                    }
                 }
             });
         }

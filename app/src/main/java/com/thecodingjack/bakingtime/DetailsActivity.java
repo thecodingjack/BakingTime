@@ -41,21 +41,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (recipe != null) {
             ArrayList<RecipeIngredient> ingredientList = recipe.getIngredients();
             ArrayList<RecipeStep> stepList = recipe.getSteps();
-
-
-            IngredientsFragment ingredientsFragment = new IngredientsFragment();
-            ingredientsFragment.setIngredientList(ingredientList);
             FragmentManager fragmentManager = getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .add(R.id.ingredient_container, ingredientsFragment)
-                    .commit();
-
-            StepsFragment stepsFragment = new StepsFragment();
-            stepsFragment.setRecipeStepArrayList(stepList);
-            fragmentManager.beginTransaction()
-                    .add(R.id.steps_container, stepsFragment)
-                    .commit();
 
             if(findViewById(R.id.instruction_container)!=null){
                 isTwoPane = true;
@@ -63,12 +49,28 @@ public class DetailsActivity extends AppCompatActivity {
                 InstructionFragment instructionFragment = new InstructionFragment();
                 instructionFragment.setRecipeStepArrayList(recipe.getSteps());
                 instructionFragment.setStepIndex(0);
+                instructionFragment.setTwoPane(isTwoPane);
                 instructionFragment.setRecipeStep(recipe.getSteps().get(0));
                 fragmentManager.beginTransaction()
                         .add(R.id.instruction_container,instructionFragment)
                         .commit();
-
+            }else{
+                isTwoPane = false;
             }
+
+            IngredientsFragment ingredientsFragment = new IngredientsFragment();
+            ingredientsFragment.setIngredientList(ingredientList);
+            fragmentManager.beginTransaction()
+                    .add(R.id.ingredient_container, ingredientsFragment)
+                    .commit();
+
+            StepsFragment stepsFragment = new StepsFragment();
+            stepsFragment.setTwoPane(isTwoPane);
+            stepsFragment.setRecipeStepArrayList(stepList);
+            fragmentManager.beginTransaction()
+                    .add(R.id.steps_container, stepsFragment)
+                    .commit();
+
         }
 
 
