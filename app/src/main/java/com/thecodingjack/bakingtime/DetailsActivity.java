@@ -1,10 +1,13 @@
 package com.thecodingjack.bakingtime;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
@@ -13,7 +16,10 @@ import java.util.ArrayList;
  * Created by lamkeong on 7/7/2017.
  */
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements StepAdapter.StepClickListener {
+    private static final String TAG = "TESTDetailsActivity";
+    public static final String PREF_RECIPE_NAME = "recipename";
+    public static final String PREF_RECIPE_INGREDIENT = "recipeIngredient";
     public static final String RECIPE_KEY = "recipe_key";
     public static final String SCROLL_POSITION = "scroll_key";
     private Recipe recipe;
@@ -43,7 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
             ArrayList<RecipeStep> stepList = recipe.getSteps();
             FragmentManager fragmentManager = getSupportFragmentManager();
 
-            if(findViewById(R.id.instruction_container)!=null){
+            if (findViewById(R.id.instruction_container) != null) {
                 isTwoPane = true;
 
                 InstructionFragment instructionFragment = new InstructionFragment();
@@ -52,9 +58,9 @@ public class DetailsActivity extends AppCompatActivity {
                 instructionFragment.setTwoPane(isTwoPane);
                 instructionFragment.setRecipeStep(recipe.getSteps().get(0));
                 fragmentManager.beginTransaction()
-                        .add(R.id.instruction_container,instructionFragment)
+                        .add(R.id.instruction_container, instructionFragment)
                         .commit();
-            }else{
+            } else {
                 isTwoPane = false;
             }
 
@@ -72,8 +78,25 @@ public class DetailsActivity extends AppCompatActivity {
                     .commit();
 
         }
-
-
+//        SharedPreferences.Editor editor = getSharedPreferences("Recipe_pref", MODE_PRIVATE).edit();
+//        editor.putString("recipename", recipe.getName());
+//        editor.commit();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.edit().putString(PREF_RECIPE_NAME, recipe.getName()).commit();
+        Log.v(TAG, sharedPreferences.getString(PREF_RECIPE_NAME, "nothing"));
+        StringBuilder sb = new StringBuilder();
+        ArrayList<RecipeIngredient> ingredientList = recipe.getIngredients();
+        for (int i = 0; i < ingredientList.size(); i++) {
+            RecipeIngredient currentItem = ingredientList.get(i);
+            double quantity = currentItem.getQuantity();
+            String measure = currentItem.getMeasure();
+            String name = currentItem.getIngredientName();
+            String ItemDetails = quantity + " " + measure + " " + name;
+            sb.append(ItemDetails + "\n");
+        }
+        String recipeIngredient = sb.toString();
+        sharedPreferences.edit().putString(PREF_RECIPE_INGREDIENT, recipeIngredient).commit();
+        Log.v(TAG, sharedPreferences.getString(PREF_RECIPE_INGREDIENT, "nothing"));
 
         mScrollView.post(new Runnable() {
             @Override
@@ -81,7 +104,6 @@ public class DetailsActivity extends AppCompatActivity {
                 mScrollView.smoothScrollTo(0, scrollY);
             }
         });
-
     }
 
     @Override
@@ -90,17 +112,23 @@ public class DetailsActivity extends AppCompatActivity {
         outState.putInt(SCROLL_POSITION, mScrollView.getScrollY());
     }
 
-    void updateInstruction(int stepIndex){
-        if(isTwoPane){
+    //TODO 2) Issue - tablet mode clicking on video not replacing with new fragment, tried implementing onclick but it is not listening to the change
+    void updateInstruction(int stepIndex) {
+        if (isTwoPane) {
             InstructionFragment newFragment = new InstructionFragment();
             newFragment.setRecipeStepArrayList(recipe.getSteps());
             newFragment.setStepIndex(stepIndex);
             newFragment.setTwoPane(isTwoPane);
             newFragment.setRecipeStep(recipe.getSteps().get(stepIndex));
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.instruction_container,newFragment)
+                    .replace(R.id.instruction_container, newFragment)
                     .commit();
 
         }
+    }
+
+    @Override
+    public void onListItemClick(int stepPosition) {
+        updateInstruction(stepPosition);
     }
 }

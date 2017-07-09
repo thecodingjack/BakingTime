@@ -41,7 +41,7 @@ import static com.thecodingjack.bakingtime.StepsFragment.STEPS_LIST;
  */
 
 public class InstructionFragment extends Fragment implements ExoPlayer.EventListener {
-    private static final String TAG = "InstructionFragment";
+    private static final String TAG = "TESTInstructionFragment";
     private SimpleExoPlayerView mPlayerView;
     private TextView mInstructionView;
     private SimpleExoPlayer mExoPlayer;
@@ -52,6 +52,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     private int stepIndex;
     private Toast mToast;
     private boolean isTwoPane;
+
     public InstructionFragment() {
     }
 
@@ -81,18 +82,18 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         previousButton = (Button) rootView.findViewById(R.id.previousButton);
         Intent intent = getActivity().getIntent();
 
-        if(intent != null && intent.hasExtra(STEPS_LIST)&& intent.hasExtra(STEPS_INDEX)) {
+        if (intent != null && intent.hasExtra(STEPS_LIST) && intent.hasExtra(STEPS_INDEX)) {
             recipeStepArrayList = intent.getParcelableArrayListExtra(STEPS_LIST);
             stepIndex = intent.getIntExtra(STEPS_INDEX, 0);
             recipeStep = recipeStepArrayList.get(stepIndex);
         }
 
-        if(savedInstanceState!=null){
-            stepIndex = savedInstanceState.getInt(STEPS_INDEX,0);
+        if (savedInstanceState != null) {
+            stepIndex = savedInstanceState.getInt(STEPS_INDEX, 0);
             recipeStep = recipeStepArrayList.get(stepIndex);
-            Log.v("TEST","Saved step: " + stepIndex);
-        }else{
-            Log.v("TEST","savedInstance is empty");
+            Log.v(TAG, "onCreateView Saved step: " + stepIndex);
+        } else {
+            Log.v(TAG, "onCreateView savedInstance is empty");
         }
 
         recipeUri = Uri.parse(recipeStep.getVideoURL());
@@ -100,7 +101,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         if (recipeUri != null) {
             initializePlayer(recipeUri);
         }
-            mInstructionView.setText(recipeStep.getFullDescription());
+        mInstructionView.setText(recipeStep.getFullDescription());
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +136,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
                         releasePlayer();
                         initializePlayer(recipeUri);
                     }
-                        mInstructionView.setText(recipeStep.getFullDescription());
+                    mInstructionView.setText(recipeStep.getFullDescription());
                 } else {
                     if (mToast != null) {
                         mToast.cancel();
@@ -174,7 +175,9 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     private void releasePlayer() {
-        if(mExoPlayer==null){return;}
+        if (mExoPlayer == null) {
+            return;
+        }
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
@@ -212,18 +215,54 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
 
     }
 
+    /* TODO 1) Issue - instructionSavedInstance becomes null onCreate
+    if savedInstance is empty, this fragment is loaded with the step passed from details activity
+    I saved the step on saveInstance but onCreate it becomes null...
+07-09 10:56:25.392 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onSaveInstance saved step:8
+07-09 10:56:25.463 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onDestroy saved step:8
+07-09 10:56:25.517 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onCreate saved step: null
+07-09 10:56:25.525 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onCreateView savedInstance is empty
+07-09 10:56:25.535 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onSaveInstance saved step:6
+07-09 10:56:25.537 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onActivityCreated saved step:6
+07-09 10:56:25.537 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onSaveInstance saved step:6
+     */
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(STEPS_INDEX,stepIndex);
-        Log.v(TAG,"onSaveInstance saved step:"+ stepIndex);
+        outState.putInt(STEPS_INDEX, stepIndex);
+        Log.v(TAG, "onSaveInstance saved step:" + stepIndex);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "onDestroy saved step:" + stepIndex);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.v(TAG, "onActivityCreated saved step:" + stepIndex);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.v(TAG, "onSaveInstance saved step:" + stepIndex);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.v(TAG, "onSaveInstance saved step:" + stepIndex);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState==null){
-            Log.v(TAG,"onCreate saved step: null");
-        }else {
+        if (savedInstanceState == null) {
+            Log.v(TAG, "onCreate saved step: null");
+        } else {
             stepIndex = savedInstanceState.getInt(STEPS_INDEX, 0);
             Log.v(TAG, "onCreate saved step:" + stepIndex);
         }

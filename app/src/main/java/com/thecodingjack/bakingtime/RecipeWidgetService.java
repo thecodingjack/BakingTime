@@ -5,6 +5,11 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import static com.thecodingjack.bakingtime.DetailsActivity.PREF_RECIPE_INGREDIENT;
+import static com.thecodingjack.bakingtime.DetailsActivity.PREF_RECIPE_NAME;
 
 /**
  * Created by lamkeong on 7/9/2017.
@@ -12,36 +17,18 @@ import android.content.Intent;
 
 public class RecipeWidgetService extends IntentService {
 
-    public static final String ACTION_WATER_PLANT = "com.example.android.mygarden.action.water_plant";
-    public static final String ACTION_UPDATE_RECIPE_WIDGETS = "com.example.android.mygarden.action.update_recipe_widgets";
-    public static final String EXTRA_PLANT_ID = "com.example.android.mygarden.extra.PLANT_ID";;
+    public static final String ACTION_UPDATE_RECIPE_WIDGETS = "com.example.android.bakingtime.action.update_recipe_widgets";
 
     public RecipeWidgetService() {
         super("RecipeWidgetService");
     }
 
-    /**
-     * Starts this service to perform WaterPlant action with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-
-    /**
-     * Starts this service to perform UpdatePlantWidgets action with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
     public static void startActionUpdatePlantWidgets(Context context) {
         Intent intent = new Intent(context, RecipeWidgetService.class);
         intent.setAction(ACTION_UPDATE_RECIPE_WIDGETS);
         context.startService(intent);
     }
 
-    /**
-     * @param intent
-     */
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
@@ -52,28 +39,14 @@ public class RecipeWidgetService extends IntentService {
         }
     }
 
-    /**
-     * Handle action WaterPlant in the provided background thread with the provided
-     * parameters.
-     */
-
-
-    /**
-     * Handle action UpdatePlantWidgets in the provided background thread
-     */
     private void handleActionUpdatePlantWidgets() {
-        //Query to get the plant that's most in need for water (last watered)
 
-        // Extract the plant details
-        int imgRes = R.drawable.recipe_default; // Default image in case our garden is empty
-        String recipeName = "Ice Cream";
-        String recipeIngredient = "Ice \nCream";
-
-
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String recipeName = sharedPreferences.getString(PREF_RECIPE_NAME, "nothing");
+        int imgRes = R.drawable.recipe_default;
+        String recipeIngredient = sharedPreferences.getString(PREF_RECIPE_INGREDIENT, "nothing");;
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
-        //Now update all widgets
-//        RecipeWidgetProvider.updatePlantWidgets(this, appWidgetManager, imgRes,recipeName ,recipeIngredient,appWidgetIds);
+        RecipeWidgetProvider.updatePlantWidgets(this, appWidgetManager,recipeName ,recipeIngredient,appWidgetIds);
     }
 }

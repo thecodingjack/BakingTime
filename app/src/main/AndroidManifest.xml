@@ -32,6 +32,7 @@
                 android:value=".DetailsActivity"/>
 
         </activity>
+        <service android:name=".RecipeWidgetService"/>
         <receiver android:name=".RecipeWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -46,7 +47,5 @@
 </manifest>
 
 
-    <!--TODO 2) Fix instructionSavedInstance-->
-    <!--TODO 3) Fix tablet mode clicking on video not replacing with new fragment-->
 
-    <!--TODO 7) Create Widget-->
+
