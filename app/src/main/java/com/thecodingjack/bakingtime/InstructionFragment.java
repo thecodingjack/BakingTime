@@ -41,6 +41,7 @@ import static com.thecodingjack.bakingtime.StepsFragment.STEPS_LIST;
  */
 
 public class InstructionFragment extends Fragment implements ExoPlayer.EventListener {
+    private static final String TAG = "InstructionFragment";
     private SimpleExoPlayerView mPlayerView;
     private TextView mInstructionView;
     private SimpleExoPlayer mExoPlayer;
@@ -173,6 +174,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     private void releasePlayer() {
+        if(mExoPlayer==null){return;}
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
@@ -213,6 +215,18 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(STEPS_INDEX,stepIndex);
+        Log.v(TAG,"onSaveInstance saved step:"+ stepIndex);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState==null){
+            Log.v(TAG,"onCreate saved step: null");
+        }else {
+            stepIndex = savedInstanceState.getInt(STEPS_INDEX, 0);
+            Log.v(TAG, "onCreate saved step:" + stepIndex);
+        }
     }
 }
 
