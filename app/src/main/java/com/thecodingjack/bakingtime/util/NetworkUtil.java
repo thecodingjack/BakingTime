@@ -1,8 +1,8 @@
 package com.thecodingjack.bakingtime.util;
 
-import com.thecodingjack.bakingtime.Recipe;
-import com.thecodingjack.bakingtime.RecipeIngredient;
-import com.thecodingjack.bakingtime.RecipeStep;
+import com.thecodingjack.bakingtime.ui.recipePOJO.Recipe;
+import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeIngredient;
+import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeStep;
 
 import org.json.JSONArray;
 import org.json.JSONException;

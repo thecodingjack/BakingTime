@@ -1,4 +1,4 @@
-package com.thecodingjack.bakingtime;
+package com.thecodingjack.bakingtime.ui.recipePOJO;
 
 import android.os.Parcel;
 import android.os.Parcelable;

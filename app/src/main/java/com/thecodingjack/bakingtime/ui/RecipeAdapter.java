@@ -1,4 +1,4 @@
-package com.thecodingjack.bakingtime;
+package com.thecodingjack.bakingtime.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.thecodingjack.bakingtime.R;
+import com.thecodingjack.bakingtime.ui.recipePOJO.Recipe;
 
 import java.util.ArrayList;
 

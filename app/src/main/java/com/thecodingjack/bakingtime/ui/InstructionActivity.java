@@ -1,8 +1,10 @@
-package com.thecodingjack.bakingtime;
+package com.thecodingjack.bakingtime.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.thecodingjack.bakingtime.R;
 
 /**
  * Created by lamkeong on 7/7/2017.

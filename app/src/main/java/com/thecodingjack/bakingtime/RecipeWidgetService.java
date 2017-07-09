@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import static com.thecodingjack.bakingtime.DetailsActivity.PREF_RECIPE_INGREDIENT;
-import static com.thecodingjack.bakingtime.DetailsActivity.PREF_RECIPE_NAME;
+import static com.thecodingjack.bakingtime.ui.DetailsActivity.PREF_RECIPE_INGREDIENT;
+import static com.thecodingjack.bakingtime.ui.DetailsActivity.PREF_RECIPE_NAME;
 
 /**
  * Created by lamkeong on 7/9/2017.

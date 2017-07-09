@@ -1,10 +1,11 @@
-package com.thecodingjack.bakingtime;
+package com.thecodingjack.bakingtime.ui;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.thecodingjack.bakingtime.databinding.ActivityMainBinding;
+import com.thecodingjack.bakingtime.ui.recipePOJO.Recipe;
 import com.thecodingjack.bakingtime.util.NetworkUtil;
 
 import java.net.URL;

@@ -1,4 +1,4 @@
-package com.thecodingjack.bakingtime;
+package com.thecodingjack.bakingtime.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ScrollView;
+
+import com.thecodingjack.bakingtime.R;
+import com.thecodingjack.bakingtime.ui.recipePOJO.Recipe;
+import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeIngredient;
+import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeStep;
 
 import java.util.ArrayList;
 

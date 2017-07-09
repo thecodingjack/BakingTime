@@ -1,4 +1,4 @@
-package com.thecodingjack.bakingtime;
+package com.thecodingjack.bakingtime.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,28 +13,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.*;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.source.*;
+import com.google.android.exoplayer2.trackselection.*;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.thecodingjack.bakingtime.R;
+import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeStep;
 
 import java.util.ArrayList;
-
-import static com.thecodingjack.bakingtime.StepsFragment.STEPS_INDEX;
-import static com.thecodingjack.bakingtime.StepsFragment.STEPS_LIST;
 
 /**
  * Created by lamkeong on 7/7/2017.
@@ -75,21 +64,21 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
+        View rootView = inflater.inflate(com.thecodingjack.bakingtime.R.layout.fragment_instruction, container, false);
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
         mInstructionView = (TextView) rootView.findViewById(R.id.instruction_view);
         nextButton = (Button) rootView.findViewById(R.id.nextButton);
         previousButton = (Button) rootView.findViewById(R.id.previousButton);
         Intent intent = getActivity().getIntent();
 
-        if (intent != null && intent.hasExtra(STEPS_LIST) && intent.hasExtra(STEPS_INDEX)) {
-            recipeStepArrayList = intent.getParcelableArrayListExtra(STEPS_LIST);
-            stepIndex = intent.getIntExtra(STEPS_INDEX, 0);
+        if (intent != null && intent.hasExtra(StepsFragment.STEPS_LIST) && intent.hasExtra(StepsFragment.STEPS_INDEX)) {
+            recipeStepArrayList = intent.getParcelableArrayListExtra(StepsFragment.STEPS_LIST);
+            stepIndex = intent.getIntExtra(StepsFragment.STEPS_INDEX, 0);
             recipeStep = recipeStepArrayList.get(stepIndex);
         }
 
         if (savedInstanceState != null) {
-            stepIndex = savedInstanceState.getInt(STEPS_INDEX, 0);
+            stepIndex = savedInstanceState.getInt(StepsFragment.STEPS_INDEX, 0);
             recipeStep = recipeStepArrayList.get(stepIndex);
             Log.v(TAG, "onCreateView Saved step: " + stepIndex);
         } else {
@@ -150,8 +139,8 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         releasePlayer();
     }
 
@@ -229,7 +218,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(STEPS_INDEX, stepIndex);
+        outState.putInt(StepsFragment.STEPS_INDEX, stepIndex);
         Log.v(TAG, "onSaveInstance saved step:" + stepIndex);
     }
 
@@ -263,7 +252,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         if (savedInstanceState == null) {
             Log.v(TAG, "onCreate saved step: null");
         } else {
-            stepIndex = savedInstanceState.getInt(STEPS_INDEX, 0);
+            stepIndex = savedInstanceState.getInt(StepsFragment.STEPS_INDEX, 0);
             Log.v(TAG, "onCreate saved step:" + stepIndex);
         }
     }

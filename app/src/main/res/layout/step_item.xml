@@ -6,13 +6,27 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/mediumPadding"
     app:cardBackgroundColor="@color/colorYellowBackground">
-    <TextView
-        android:id="@+id/steps_shortDescription"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/smallPadding"
-        android:paddingTop="@dimen/smallPadding"
-        android:textColor="@color/DarkBluishGreenText"
-        android:textSize="@dimen/mediumText"
-        tools:text="Step1" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/step_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/recipe_default"/>
+        <TextView
+            android:id="@+id/steps_shortDescription"
+            android:layout_toRightOf="@+id/step_image"
+            android:layout_toEndOf="@+id/step_image"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/mediumPadding"
+            android:textColor="@color/DarkBluishGreenText"
+            android:textSize="@dimen/mediumText"
+            tools:text="Step1" />
+    </RelativeLayout>
+
 </android.support.v7.widget.CardView>

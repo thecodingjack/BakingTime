@@ -10,7 +10,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import static com.thecodingjack.bakingtime.DetailsActivity.PREF_RECIPE_NAME;
+import com.thecodingjack.bakingtime.ui.MainActivity;
+
+import static com.thecodingjack.bakingtime.ui.DetailsActivity.PREF_RECIPE_NAME;
 
 /**
  * Created by lamkeong on 7/9/2017.
