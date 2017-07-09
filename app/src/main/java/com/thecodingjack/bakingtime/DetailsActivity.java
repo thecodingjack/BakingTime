@@ -89,4 +89,18 @@ public class DetailsActivity extends AppCompatActivity {
         outState.putParcelable(RECIPE_KEY, recipe);
         outState.putInt(SCROLL_POSITION, mScrollView.getScrollY());
     }
+
+    void updateInstruction(int stepIndex){
+        if(isTwoPane){
+            InstructionFragment newFragment = new InstructionFragment();
+            newFragment.setRecipeStepArrayList(recipe.getSteps());
+            newFragment.setStepIndex(stepIndex);
+            newFragment.setTwoPane(isTwoPane);
+            newFragment.setRecipeStep(recipe.getSteps().get(stepIndex));
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.instruction_container,newFragment)
+                    .commit();
+
+        }
+    }
 }

@@ -49,6 +49,7 @@ public class NetworkUtil {
             String recipeName = recipeJObj.getString("name");
             ArrayList<RecipeIngredient> recipeIngredients = new ArrayList<>();
             ArrayList<RecipeStep> recipeSteps = new ArrayList<>();
+            String recipeImageURL = recipeJObj.getString("image");
 
             JSONArray ingredientsJArray = recipeJObj.getJSONArray("ingredients");
             for (int j = 0; j < ingredientsJArray.length(); j++) {
@@ -70,7 +71,7 @@ public class NetworkUtil {
                 RecipeStep step = new RecipeStep(shortDescription,fullDescription,videoURL,thumbnailURL);
                 recipeSteps.add(step);
             }
-            Recipe recipe = new Recipe(recipeID,recipeName,recipeIngredients,recipeSteps);
+            Recipe recipe = new Recipe(recipeID,recipeName,recipeIngredients,recipeSteps,recipeImageURL);
             recipeList.add(recipe);
         }
         return recipeList;

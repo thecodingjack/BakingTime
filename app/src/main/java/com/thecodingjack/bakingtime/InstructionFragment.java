@@ -148,8 +148,8 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         releasePlayer();
     }
 

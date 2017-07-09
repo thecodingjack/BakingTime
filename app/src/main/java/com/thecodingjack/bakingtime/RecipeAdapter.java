@@ -2,11 +2,14 @@ package com.thecodingjack.bakingtime;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recipeNameTextView;
+        ImageView recipeImage;
 
         @Override
         public void onClick(View v) {
@@ -39,12 +43,19 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         public RecipeViewHolder(View itemView) {
             super(itemView);
             recipeNameTextView = (TextView) itemView.findViewById(R.id.card_recipe_name);
+            recipeImage = (ImageView)itemView.findViewById(R.id.recipe_image);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Context context, int position) {
             Recipe currentRecipe = recipeList.get(position);
             recipeNameTextView.setText(currentRecipe.getName());
+            String recipeImageURL = currentRecipe.getImageURL();
+            if(TextUtils.isEmpty(recipeImageURL)){
+                Picasso.with(context).load(R.drawable.recipe_default).placeholder(R.drawable.loading_icon).error(R.drawable.error_icon).into(recipeImage);
+            }else {
+                Picasso.with(context).load(currentRecipe.getImageURL()).placeholder(R.drawable.loading_icon).error(R.drawable.error_icon).into(recipeImage);
+            }
         }
     }
 

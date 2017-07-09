@@ -24,6 +24,7 @@ public class StepsFragment extends Fragment implements StepAdapter.StepClickList
     private RecyclerView stepsRecyclerView;
     private StepAdapter stepAdapter;
     private boolean isTwoPane;
+//    private TabletStepClickListener mCallback;
 
 
     public StepsFragment() {
@@ -35,8 +36,22 @@ public class StepsFragment extends Fragment implements StepAdapter.StepClickList
 
     public void setRecipeStepArrayList(ArrayList<RecipeStep> recipeStepArrayList) {
         this.recipeStepArrayList = recipeStepArrayList;
-
     }
+
+//    public interface TabletStepClickListener{
+//        void onStepSelected(int position);
+//    }
+//
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        try {
+//            mCallback = (TabletStepClickListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString()
+//                    + " must implement TabletStepClickListener");
+//        }
+//    }
 
     @Nullable
     @Override

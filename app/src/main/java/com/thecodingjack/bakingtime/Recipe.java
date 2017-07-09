@@ -14,12 +14,14 @@ public class Recipe implements Parcelable {
     private String name;
     private ArrayList<RecipeIngredient> ingredients;
     private ArrayList<RecipeStep> steps;
+    private String imageURL;
 
-    public Recipe(int recipeID, String name, ArrayList<RecipeIngredient> ingredients, ArrayList<RecipeStep> steps) {
+    public Recipe(int recipeID, String name, ArrayList<RecipeIngredient> ingredients, ArrayList<RecipeStep> steps, String imageURL) {
         this.recipeID = recipeID;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
+        this.imageURL=imageURL;
     }
 
     public int getRecipeID() {
@@ -28,6 +30,10 @@ public class Recipe implements Parcelable {
 
     public String getName() {
         return name;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     public ArrayList<RecipeIngredient> getIngredients() {
@@ -49,6 +55,7 @@ public class Recipe implements Parcelable {
         dest.writeString(this.name);
         dest.writeList(this.ingredients);
         dest.writeList(this.steps);
+        dest.writeString(this.imageURL);
     }
 
     protected Recipe(Parcel in) {
@@ -58,6 +65,7 @@ public class Recipe implements Parcelable {
         in.readList(this.ingredients, RecipeIngredient.class.getClassLoader());
         this.steps = new ArrayList<RecipeStep>();
         in.readList(this.steps, RecipeStep.class.getClassLoader());
+        this.imageURL = in.readString();
     }
 
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {

@@ -10,10 +10,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/recipe_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/recipe_default"/>
             <TextView
                 android:textSize="@dimen/largeText"
-                android:padding="@dimen/smallPadding"
+                android:padding="@dimen/mediumPadding"
                 android:textColor="@color/DarkBluishGreenText"
+                android:layout_toRightOf="@+id/recipe_image"
+                android:layout_centerInParent="true"
                 android:id="@+id/card_recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
