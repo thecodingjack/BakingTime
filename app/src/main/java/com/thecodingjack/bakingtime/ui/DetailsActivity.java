@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Created by lamkeong on 7/7/2017.
  */
 
-public class DetailsActivity extends AppCompatActivity implements StepAdapter.StepClickListener {
+public class DetailsActivity extends AppCompatActivity{
     private static final String TAG = "TESTDetailsActivity";
     public static final String PREF_RECIPE_NAME = "recipename";
     public static final String PREF_RECIPE_INGREDIENT = "recipeIngredient";
@@ -30,7 +30,6 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
     private Recipe recipe;
     private ScrollView mScrollView;
     private int scrollY;
-    private boolean isTwoPane;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +37,6 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
         setContentView(R.layout.activity_detail);
 
         mScrollView = (ScrollView) findViewById(R.id.detailScrollView);
-
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra(MainActivity.SELECTED_RECIPE);
         scrollY = 0;
@@ -53,20 +51,16 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
             ArrayList<RecipeIngredient> ingredientList = recipe.getIngredients();
             ArrayList<RecipeStep> stepList = recipe.getSteps();
             FragmentManager fragmentManager = getSupportFragmentManager();
-
-            if (findViewById(R.id.instruction_container) != null) {
-                isTwoPane = true;
+            boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+            if (isTablet){
 
                 InstructionFragment instructionFragment = new InstructionFragment();
                 instructionFragment.setRecipeStepArrayList(recipe.getSteps());
                 instructionFragment.setStepIndex(0);
-                instructionFragment.setTwoPane(isTwoPane);
                 instructionFragment.setRecipeStep(recipe.getSteps().get(0));
                 fragmentManager.beginTransaction()
                         .add(R.id.instruction_container, instructionFragment)
                         .commit();
-            } else {
-                isTwoPane = false;
             }
 
             IngredientsFragment ingredientsFragment = new IngredientsFragment();
@@ -76,16 +70,12 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
                     .commit();
 
             StepsFragment stepsFragment = new StepsFragment();
-            stepsFragment.setTwoPane(isTwoPane);
             stepsFragment.setRecipeStepArrayList(stepList);
             fragmentManager.beginTransaction()
                     .add(R.id.steps_container, stepsFragment)
                     .commit();
-
         }
-//        SharedPreferences.Editor editor = getSharedPreferences("Recipe_pref", MODE_PRIVATE).edit();
-//        editor.putString("recipename", recipe.getName());
-//        editor.commit();
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putString(PREF_RECIPE_NAME, recipe.getName()).commit();
         Log.v(TAG, sharedPreferences.getString(PREF_RECIPE_NAME, "nothing"));
@@ -115,25 +105,5 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(RECIPE_KEY, recipe);
         outState.putInt(SCROLL_POSITION, mScrollView.getScrollY());
-    }
-
-    //TODO 2) Issue - tablet mode clicking on video not replacing with new fragment, tried implementing onclick but it is not listening to the change
-    void updateInstruction(int stepIndex) {
-        if (isTwoPane) {
-            InstructionFragment newFragment = new InstructionFragment();
-            newFragment.setRecipeStepArrayList(recipe.getSteps());
-            newFragment.setStepIndex(stepIndex);
-            newFragment.setTwoPane(isTwoPane);
-            newFragment.setRecipeStep(recipe.getSteps().get(stepIndex));
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.instruction_container, newFragment)
-                    .commit();
-
-        }
-    }
-
-    @Override
-    public void onListItemClick(int stepPosition) {
-        updateInstruction(stepPosition);
     }
 }

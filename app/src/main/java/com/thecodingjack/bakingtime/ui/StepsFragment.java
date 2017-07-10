@@ -26,13 +26,9 @@ public class StepsFragment extends Fragment implements StepAdapter.StepClickList
     private ArrayList<RecipeStep> recipeStepArrayList;
     private RecyclerView stepsRecyclerView;
     private StepAdapter stepAdapter;
-    private boolean isTwoPane;
+
 
     public StepsFragment() {}
-
-    public void setTwoPane(boolean isTwoPane) {
-        this.isTwoPane = isTwoPane;
-    }
 
     public void setRecipeStepArrayList(ArrayList<RecipeStep> recipeStepArrayList) {
         this.recipeStepArrayList = recipeStepArrayList;
@@ -55,7 +51,8 @@ public class StepsFragment extends Fragment implements StepAdapter.StepClickList
 
     @Override
     public void onListItemClick(int stepPosition) {
-        if (isTwoPane) {
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize) {
             Toast.makeText(getActivity(), recipeStepArrayList.get(stepPosition).getShortDescription(), Toast.LENGTH_SHORT).show();
         } else {
             Intent stepsIntent = new Intent(getContext(), InstructionActivity.class);

@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,6 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     private ArrayList<RecipeStep> recipeStepArrayList;
     private int stepIndex;
     private Toast mToast;
-    private boolean isTwoPane;
 
     public InstructionFragment() {
     }
@@ -60,10 +58,6 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
 
     public void setStepIndex(int stepIndex) {
         this.stepIndex = stepIndex;
-    }
-
-    public void setTwoPane(boolean isTwoPane) {
-        this.isTwoPane = isTwoPane;
     }
 
     public void setRecipeStep(RecipeStep recipeStep) {
@@ -82,13 +76,9 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         if (savedInstanceState != null) {
             stepIndex = savedInstanceState.getInt(StepsFragment.STEPS_INDEX, 0);
             recipeStep = recipeStepArrayList.get(stepIndex);
-            Log.v(TAG, "onCreateView Saved step: " + stepIndex);
-        } else {
-            Log.v(TAG, "onCreateView savedInstance is empty");
         }
 
         recipeUri = Uri.parse(recipeStep.getVideoURL());
-
         if (recipeUri != null) {
             initializePlayer(recipeUri);
         }
@@ -169,13 +159,16 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {}
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+    }
 
     @Override
-    public void onPlayerError(ExoPlaybackException error) {}
+    public void onPlayerError(ExoPlaybackException error) {
+    }
 
     @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+    }
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -185,64 +178,21 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onLoadingChanged(boolean isLoading) {}
+    public void onLoadingChanged(boolean isLoading) {
+    }
 
     @Override
-    public void onPositionDiscontinuity() {}
-
-    /* TODO 1) Issue - instructionSavedInstance becomes null onCreate
-    if savedInstance is empty, this fragment is loaded with the step passed from details activity
-    I saved the step on saveInstance but onCreate it becomes null...
-07-09 10:56:25.392 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onSaveInstance saved step:8
-07-09 10:56:25.463 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onDestroy saved step:8
-07-09 10:56:25.517 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onCreate saved step: null
-07-09 10:56:25.525 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onCreateView savedInstance is empty
-07-09 10:56:25.535 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onSaveInstance saved step:6
-07-09 10:56:25.537 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onActivityCreated saved step:6
-07-09 10:56:25.537 14828-14828/com.thecodingjack.bakingtime V/TESTInstructionFragment: onSaveInstance saved step:6
-     */
+    public void onPositionDiscontinuity() {
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(StepsFragment.STEPS_INDEX, stepIndex);
-        Log.v(TAG, "onSaveInstance saved step:" + stepIndex);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.v(TAG, "onDestroy saved step:" + stepIndex);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.v(TAG, "onActivityCreated saved step:" + stepIndex);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.v(TAG, "onSaveInstance saved step:" + stepIndex);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.v(TAG, "onSaveInstance saved step:" + stepIndex);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if (savedInstanceState == null) {
-            Log.v(TAG, "onCreate saved step: null");
-        } else {
-            stepIndex = savedInstanceState.getInt(StepsFragment.STEPS_INDEX, 0);
-            Log.v(TAG, "onCreate saved step:" + stepIndex);
-        }
     }
 }
-
-
