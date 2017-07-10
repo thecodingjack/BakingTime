@@ -30,7 +30,6 @@ public class InstructionActivity extends AppCompatActivity {
             InstructionFragment instructionFragment = new InstructionFragment();
             instructionFragment.setRecipeStepArrayList(recipeStepArrayList);
             instructionFragment.setStepIndex(stepIndex);
-            instructionFragment.setTwoPane(false);
             instructionFragment.setRecipeStep(recipeStepArrayList.get(stepIndex));
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.instruction_container, instructionFragment)

@@ -15,6 +15,9 @@ import com.thecodingjack.bakingtime.ui.recipePOJO.Recipe;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by lamkeong on 7/7/2017.
  */
@@ -33,8 +36,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView recipeNameTextView;
-        ImageView recipeImage;
+        @BindView(R.id.card_recipe_name)TextView recipeNameTextView;
+        @BindView(R.id.recipe_image) ImageView recipeImage;
 
         @Override
         public void onClick(View v) {
@@ -44,8 +47,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
-            recipeNameTextView = (TextView) itemView.findViewById(R.id.card_recipe_name);
-            recipeImage = (ImageView)itemView.findViewById(R.id.recipe_image);
+            ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
         }
 

@@ -16,6 +16,9 @@ import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeStep;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by lamkeong on 7/8/2017.
  */
@@ -34,8 +37,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     }
 
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView stepTextView;
-        ImageView stepImage;
+        @BindView(R.id.steps_shortDescription) TextView stepTextView;
+        @BindView(R.id.step_image) ImageView stepImage;
         @Override
         public void onClick(View v) {
             int stepPosition = getAdapterPosition();
@@ -44,8 +47,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         public StepViewHolder(View itemView) {
             super(itemView);
-            stepTextView = (TextView) itemView.findViewById(R.id.steps_shortDescription);
-            stepImage = (ImageView) itemView.findViewById(R.id.step_image);
+            ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
         }
 

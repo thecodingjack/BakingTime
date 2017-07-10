@@ -33,18 +33,24 @@ import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeStep;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by lamkeong on 7/7/2017.
  */
 
 public class InstructionFragment extends Fragment implements ExoPlayer.EventListener {
     private static final String TAG = "TESTInstructionFragment";
-    private SimpleExoPlayerView mPlayerView;
-    private TextView mInstructionView;
+
+    @BindView(R.id.player_view)SimpleExoPlayerView mPlayerView;
+    @BindView(R.id.instruction_view)TextView mInstructionView;
+    @BindView(R.id.previousButton) Button previousButton;
+    @BindView(R.id.nextButton) Button nextButton;
     private SimpleExoPlayer mExoPlayer;
     private RecipeStep recipeStep;
     private Uri recipeUri;
-    private Button nextButton, previousButton;
+
     private ArrayList<RecipeStep> recipeStepArrayList;
     private int stepIndex;
     private Toast mToast;
@@ -68,10 +74,8 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(com.thecodingjack.bakingtime.R.layout.fragment_instruction, container, false);
-        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
-        mInstructionView = (TextView) rootView.findViewById(R.id.instruction_view);
-        nextButton = (Button) rootView.findViewById(R.id.nextButton);
-        previousButton = (Button) rootView.findViewById(R.id.previousButton);
+        ButterKnife.bind(this, rootView);
+
 
         if (savedInstanceState != null) {
             stepIndex = savedInstanceState.getInt(StepsFragment.STEPS_INDEX, 0);

@@ -17,6 +17,9 @@ import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeStep;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by lamkeong on 7/7/2017.
  */
@@ -28,15 +31,17 @@ public class DetailsActivity extends AppCompatActivity{
     public static final String RECIPE_KEY = "recipe_key";
     public static final String SCROLL_POSITION = "scroll_key";
     private Recipe recipe;
-    private ScrollView mScrollView;
+//    private ScrollView mScrollView;
     private int scrollY;
+    @BindView (R.id.detailScrollView) ScrollView mScrollView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
 
-        mScrollView = (ScrollView) findViewById(R.id.detailScrollView);
+//        mScrollView = (ScrollView) findViewById(R.id.detailScrollView);
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra(MainActivity.SELECTED_RECIPE);
         scrollY = 0;

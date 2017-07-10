@@ -13,6 +13,9 @@ import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeIngredient;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by lamkeong on 7/7/2017.
  */
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 public class IngredientsFragment extends Fragment {
     public static final String RECIPE_LIST = "recipe_list";
     private ArrayList<RecipeIngredient> ingredientList;
+    @BindView (R.id.ingredients_frag_TV) TextView mtextView;
 
     public IngredientsFragment() {
     }
@@ -27,12 +31,14 @@ public class IngredientsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         if(savedInstanceState!= null){
             ingredientList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
         }
 
         View view = inflater.inflate(R.layout.fragment_ingredients,container,false);
-        final TextView mtextView = (TextView) view.findViewById(R.id.ingredients_frag_TV);
+        ButterKnife.bind(this,view);
+//        final TextView mtextView = (TextView) view.findViewById(R.id.ingredients_frag_TV);
 
         if(ingredientList !=null){
 
