@@ -1,6 +1,5 @@
 package com.thecodingjack.bakingtime.ui;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,10 +12,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.*;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.*;
-import com.google.android.exoplayer2.trackselection.*;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -69,13 +78,6 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
         mInstructionView = (TextView) rootView.findViewById(R.id.instruction_view);
         nextButton = (Button) rootView.findViewById(R.id.nextButton);
         previousButton = (Button) rootView.findViewById(R.id.previousButton);
-        Intent intent = getActivity().getIntent();
-
-        if (intent != null && intent.hasExtra(StepsFragment.STEPS_LIST) && intent.hasExtra(StepsFragment.STEPS_INDEX)) {
-            recipeStepArrayList = intent.getParcelableArrayListExtra(StepsFragment.STEPS_LIST);
-            stepIndex = intent.getIntExtra(StepsFragment.STEPS_INDEX, 0);
-            recipeStep = recipeStepArrayList.get(stepIndex);
-        }
 
         if (savedInstanceState != null) {
             stepIndex = savedInstanceState.getInt(StepsFragment.STEPS_INDEX, 0);
@@ -146,15 +148,11 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
 
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
-
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
-
             mExoPlayer.addListener(this);
-
-
             String userAgent = Util.getUserAgent(getActivity(), "BakingTime");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
@@ -164,28 +162,20 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     private void releasePlayer() {
-        if (mExoPlayer == null) {
-            return;
-        }
+        if (mExoPlayer == null) return;
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
     }
 
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-    }
+    public void onTimelineChanged(Timeline timeline, Object manifest) {}
 
     @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
+    public void onPlayerError(ExoPlaybackException error) {}
 
     @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -195,14 +185,10 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
+    public void onLoadingChanged(boolean isLoading) {}
 
     @Override
-    public void onPositionDiscontinuity() {
-
-    }
+    public void onPositionDiscontinuity() {}
 
     /* TODO 1) Issue - instructionSavedInstance becomes null onCreate
     if savedInstance is empty, this fragment is loaded with the step passed from details activity
@@ -249,6 +235,7 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         if (savedInstanceState == null) {
             Log.v(TAG, "onCreate saved step: null");
         } else {
