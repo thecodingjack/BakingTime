@@ -9,6 +9,7 @@
         android:textColor="@color/DarkBluishGreenText"
         android:textStyle="bold"
         android:textSize="@dimen/largePadding"
+        android:layout_marginTop="@dimen/mediumPadding"
         android:layout_marginBottom="@dimen/mediumPadding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

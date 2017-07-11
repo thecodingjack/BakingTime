@@ -15,6 +15,8 @@ import com.thecodingjack.bakingtime.ui.recipePOJO.RecipeStep;
 
 import java.util.ArrayList;
 
+import static android.R.attr.scrollY;
+
 /**
  * Created by lamkeong on 7/7/2017.
  */
@@ -27,7 +29,6 @@ public class StepsFragment extends Fragment implements StepAdapter.StepClickList
     private RecyclerView stepsRecyclerView;
     private StepAdapter stepAdapter;
     private StepAdapter.StepClickListener tableStepClickListener;
-    private int scrollY;
 
     public void setTableStepClickListener(StepAdapter.StepClickListener listener) {
         tableStepClickListener = listener;
@@ -43,12 +44,9 @@ public class StepsFragment extends Fragment implements StepAdapter.StepClickList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        scrollY=0;
+
         if (savedInstanceState != null) {
             recipeStepArrayList = savedInstanceState.getParcelableArrayList(STEPS_LIST);
-            if (savedInstanceState.containsKey(SCROLL_POSITION)) {
-                scrollY = savedInstanceState.getInt(SCROLL_POSITION);
-            }
         }
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
         stepsRecyclerView = (RecyclerView) rootView.findViewById(R.id.steps_rv);
@@ -56,13 +54,6 @@ public class StepsFragment extends Fragment implements StepAdapter.StepClickList
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         stepsRecyclerView.setLayoutManager(layoutManager);
         stepsRecyclerView.setAdapter(stepAdapter);
-
-        stepsRecyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                stepsRecyclerView.scrollTo(0, scrollY);
-            }
-        });
         return rootView;
     }
 

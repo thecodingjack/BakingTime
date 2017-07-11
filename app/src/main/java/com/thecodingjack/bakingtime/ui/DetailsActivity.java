@@ -31,7 +31,6 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
     public static final String STEP_KEY = "step_key";
     private Recipe recipe;
     private boolean isTablet;
-    private int scrollY;
     @BindView(R.id.detailScrollView)
     ScrollView mScrollView;
     private int stepIndex;
@@ -44,7 +43,6 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
 
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra(MainActivity.SELECTED_RECIPE);
-        scrollY = 0;
         stepIndex = 0;
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(RECIPE_KEY)) {
@@ -98,6 +96,14 @@ public class DetailsActivity extends AppCompatActivity implements StepAdapter.St
         }
         String recipeIngredient = sb.toString();
         sharedPreferences.edit().putString(PREF_RECIPE_INGREDIENT, recipeIngredient).commit();
+
+
+        mScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                mScrollView.scrollTo(0, 0);
+            }
+        });
     }
 
     @Override
