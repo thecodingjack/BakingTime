@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ScrollView;
 
 import com.thecodingjack.bakingtime.R;
@@ -24,16 +23,18 @@ import butterknife.ButterKnife;
  * Created by lamkeong on 7/7/2017.
  */
 
-public class DetailsActivity extends AppCompatActivity{
+public class DetailsActivity extends AppCompatActivity implements StepAdapter.StepClickListener {
     private static final String TAG = "TESTDetailsActivity";
     public static final String PREF_RECIPE_NAME = "recipename";
     public static final String PREF_RECIPE_INGREDIENT = "recipeIngredient";
     public static final String RECIPE_KEY = "recipe_key";
-    public static final String SCROLL_POSITION = "scroll_key";
+    public static final String STEP_KEY = "step_key";
     private Recipe recipe;
-//    private ScrollView mScrollView;
+    private boolean isTablet;
     private int scrollY;
-    @BindView (R.id.detailScrollView) ScrollView mScrollView;
+    @BindView(R.id.detailScrollView)
+    ScrollView mScrollView;
+    private int stepIndex;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,28 +42,29 @@ public class DetailsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-//        mScrollView = (ScrollView) findViewById(R.id.detailScrollView);
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra(MainActivity.SELECTED_RECIPE);
         scrollY = 0;
-        if (savedInstanceState != null && savedInstanceState.containsKey(RECIPE_KEY)) {
-            recipe = savedInstanceState.getParcelable(RECIPE_KEY);
-            if (savedInstanceState.containsKey(SCROLL_POSITION)) {
-                scrollY = savedInstanceState.getInt(SCROLL_POSITION);
+        stepIndex = 0;
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(RECIPE_KEY)) {
+                recipe = savedInstanceState.getParcelable(RECIPE_KEY);
+            }
+            if (savedInstanceState.containsKey(STEP_KEY)) {
+                stepIndex = savedInstanceState.getInt(STEP_KEY);
             }
         }
-
+        
         if (recipe != null) {
             ArrayList<RecipeIngredient> ingredientList = recipe.getIngredients();
             ArrayList<RecipeStep> stepList = recipe.getSteps();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-            if (isTablet){
-
+            isTablet = getResources().getBoolean(R.bool.isTablet);
+            if (isTablet) {
                 InstructionFragment instructionFragment = new InstructionFragment();
                 instructionFragment.setRecipeStepArrayList(recipe.getSteps());
-                instructionFragment.setStepIndex(0);
-                instructionFragment.setRecipeStep(recipe.getSteps().get(0));
+                instructionFragment.setStepIndex(stepIndex);
+                instructionFragment.setRecipeStep(recipe.getSteps().get(stepIndex));
                 fragmentManager.beginTransaction()
                         .add(R.id.instruction_container, instructionFragment)
                         .commit();
@@ -76,6 +78,7 @@ public class DetailsActivity extends AppCompatActivity{
 
             StepsFragment stepsFragment = new StepsFragment();
             stepsFragment.setRecipeStepArrayList(stepList);
+            stepsFragment.setTableStepClickListener(this);
             fragmentManager.beginTransaction()
                     .add(R.id.steps_container, stepsFragment)
                     .commit();
@@ -83,7 +86,6 @@ public class DetailsActivity extends AppCompatActivity{
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putString(PREF_RECIPE_NAME, recipe.getName()).commit();
-        Log.v(TAG, sharedPreferences.getString(PREF_RECIPE_NAME, "nothing"));
         StringBuilder sb = new StringBuilder();
         ArrayList<RecipeIngredient> ingredientList = recipe.getIngredients();
         for (int i = 0; i < ingredientList.size(); i++) {
@@ -96,19 +98,26 @@ public class DetailsActivity extends AppCompatActivity{
         }
         String recipeIngredient = sb.toString();
         sharedPreferences.edit().putString(PREF_RECIPE_INGREDIENT, recipeIngredient).commit();
-        Log.v(TAG, sharedPreferences.getString(PREF_RECIPE_INGREDIENT, "nothing"));
-
-        mScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                mScrollView.smoothScrollTo(0, scrollY);
-            }
-        });
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(RECIPE_KEY, recipe);
-        outState.putInt(SCROLL_POSITION, mScrollView.getScrollY());
+        outState.putInt(STEP_KEY, stepIndex);
+
+    }
+
+    @Override
+    public void onListItemClick(int stepPosition) {
+        if (isTablet) {
+            stepIndex = stepPosition;
+            InstructionFragment instructionFragment = new InstructionFragment();
+            instructionFragment.setRecipeStepArrayList(recipe.getSteps());
+            instructionFragment.setStepIndex(stepPosition);
+            instructionFragment.setRecipeStep(recipe.getSteps().get(stepPosition));
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.instruction_container, instructionFragment)
+                    .commit();
+        }
     }
 }

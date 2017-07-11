@@ -26,10 +26,12 @@ import butterknife.ButterKnife;
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
     private ArrayList<RecipeStep> stepList;
     private StepClickListener listener;
+    private StepClickListener tabletListener;
 
-    public StepAdapter(ArrayList<RecipeStep> stepList, StepClickListener listener) {
+    public StepAdapter(ArrayList<RecipeStep> stepList, StepClickListener listener, StepClickListener tabletListener) {
         this.stepList = stepList;
         this.listener = listener;
+        this.tabletListener = tabletListener;
     }
 
     public interface StepClickListener{
@@ -43,6 +45,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         public void onClick(View v) {
             int stepPosition = getAdapterPosition();
             listener.onListItemClick(stepPosition);
+            tabletListener.onListItemClick(stepPosition);
         }
 
         public StepViewHolder(View itemView) {

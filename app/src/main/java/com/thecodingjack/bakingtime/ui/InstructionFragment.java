@@ -87,7 +87,6 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
             initializePlayer(recipeUri);
         }
         mInstructionView.setText(recipeStep.getFullDescription());
-
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +130,11 @@ public class InstructionFragment extends Fragment implements ExoPlayer.EventList
                 }
             }
         });
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        if(isTablet){
+            nextButton.setVisibility(View.GONE);
+            previousButton.setVisibility(View.GONE);
+        }
         return rootView;
     }
 
